@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 
 from random import randrange, getrandbits
+import pyasn1.codec.der.encoder
+import pyasn1.type.univ
+import base64
+
+def pempriv(n, e, d, p, q, dP, dQ, qInv):
+    template = '-----BEGIN RSA PRIVATE KEY-----\n{}-----END RSA PRIVATE KEY-----\n'
+    seq = pyasn1.type.univ.Sequence()
+    for x in [0, n, e, d, p, q, dP, dQ, qInv]:
+        seq.setComponentByPosition(len(seq), pyasn1.type.univ.Integer(x))
+    der = pyasn1.codec.der.encoder.encode(seq)
+    return template.format(base64.encodestring(der).decode('ascii'))
+
 
 # Implementacion del algoritmo extendido de Euclides para obtener el MCD y los coeficientes de una combinacion lineal
 def egcd(a, b):
@@ -69,9 +81,16 @@ def generar_claves():
     e = 65537
     #d = mul_inv(e, phi)
     d = modinv(e,phi)    
+    
+    #dP = d % p
+    #dQ = d % q
+    #qInv = pow(q, p - 2, p)
+    
+    #privada = pempriv(n,e,d,p,q,dP,dQ,qInv)
 
     return ((e, n), (d, n))
-
+    #return ((e,n), privada)
+   
 # Encriptamos el mensaje con la clave publica
 def encriptar(publica, mensaje, tipo):
     e, n = publica
@@ -99,14 +118,13 @@ if __name__ == '__main__':
     print "Generando clave publica y privada..."
 
     publica, privada = generar_claves()
-
     print ""
     print "Tu clave publica es (e,n): "
     print publica
     print ""
     print "Tu llave privada es (d,n): "
-    print privada
     print ""
+    print privada
 
     opcion = 'x'
     while opcion != 's' and opcion != 'n':
