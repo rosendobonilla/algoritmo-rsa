@@ -14,7 +14,7 @@ def pempriv(n, e, d, p, q, dP, dQ, qInv):
     return template.format(base64.encodestring(der).decode('ascii'))
 
 
-# Implementacion del algoritmo extendido de Euclides para obtener el MCD y los coeficientes de una combinacion lineal
+# Implementacion del algoritmo extendido de Euclides para obtener el inverso multiplicativo
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)
