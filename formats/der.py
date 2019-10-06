@@ -7,7 +7,10 @@ class DER(ClaseBaseFormato):
         print("")
         
     def crearPubK(self, datos):
-        return super().crearPubKDer
+        return super(DER,self).crearPubKDer(datos)
+
+    def cargarPubK(self,datos):
+        return super(DER,self).cargarPubKDer(datos)
 
     def crearPrivK(self, datos):
-        return super().crearPrivKDer       
+        return super(DER,self).crearPrivKDer(datos)       

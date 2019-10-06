@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from abc import ABCMeta, abstractmethod
-from rsa.rsa import egcd
+from rsa.rsa import RSA
 
 class ClaseBaseFormato:
     __metaclass__ = ABCMeta
@@ -27,15 +27,23 @@ class ClaseBaseFormato:
 
         return encoder.encode(asn_key)
 
+    def cargarPubKDer(self,datos):
+        from pyasn1.codec.der import decoder
+        (priv, _) = decoder.decode(datos)
+
+        return priv
+
     def crearPrivKDer(self, datos):
         from pyasn1.type import univ, namedtype
         from pyasn1.codec.der import encoder
 
+
+        rsa = RSA()
         n,e,d,p,q = datos
 
         exp1 = long(d % (p - 1))
         exp2 = long(d % (q - 1))
-        (_,coef,_) = egcd(q, p)
+        (_,coef,_) = rsa.egcd(q, p)
 
         class AsnPrivKey(univ.Sequence):
             componentType = namedtype.NamedTypes(
@@ -68,9 +76,9 @@ class ClaseBaseFormato:
     def crearPubK(self, e, n):
         pass
 
-    #@abstractmethod
-    #def cargarPubK(self, contenido):
-    #    pass
+    @abstractmethod
+    def cargarPubK(self, contenido, marcador):
+        pass
     
     @abstractmethod
     def crearPrivK(self):

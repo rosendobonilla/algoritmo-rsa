@@ -19,3 +19,12 @@ class Archivos:
         f = open(ruta,"w+")
         f.write(contenido)
         f.close()
+
+    def leerArchivo(self,ruta):
+        f = open(ruta, "r")
+        contenido = ""
+        
+        if f.mode == "r":
+            contenido = f.read()
+
+        return contenido
