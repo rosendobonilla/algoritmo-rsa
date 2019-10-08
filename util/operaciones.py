@@ -10,7 +10,7 @@ class Opera:
         self.publica = publica
         self.privada = privada
 
-    def leerFormato(self):
+    def leerFormatoClaves(self):
         carpeta = "claves"
         factory = Factory()
         archivo = Archivos()
@@ -49,14 +49,6 @@ class Opera:
                     print ""
                     contenido = archivo.leerArchivo("./claves/clave_rsa.priv")
                     print derSalida.cargarPubK(contenido)  
-
-    def imprimirPres(self):
-        print ""
-        print "++++++++++ Algoritmo de encriptacion RSA ++++++++++"
-        print ""
-        print "Generando numeros primos aleatorios (1024-bits)..."
-        print ""
-        print "Generando clave publica y privada..."
 
     def imprimirClavesP(self):
         print ""
